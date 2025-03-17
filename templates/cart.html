@@ -1,150 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Cart | My Flask App</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #43cea2, #185a9d);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background-color: #f0f0f5;
+            background-image: url('https://img.freepik.com/free-vector/flat-design-polygonal-background_23-2148900724.jpg?t=st=1742064732~exp=1742068332~hmac=8c2c8925fd44ce3237a2b4d23190d2655e8dac44d0a32d196df1692336f0be60&w=1380');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Ensures the image stays fixed while scrolling */
             color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
-
-        .form-container {
-            background-color: #fff;
-            padding: 40px 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-            width: 100%;
-            max-width: 800px;
+        h1 {
             text-align: center;
-            transition: transform 0.3s ease;
+            color: #ffffff;
+            margin-top: 20px;
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
         }
-
-        .form-container:hover {
-            transform: translateY(-5px);
+        ul {
+            list-style-type: none;
+            padding: 0;
+            max-width: 800px;
+            width: 90%;
+            margin: 20px auto;
+            padding-top: 20px;
         }
-
-        .form-container h2 {
-            margin-bottom: 30px;
-            color: #444;
-            font-size: 32px;
-            border-bottom: 2px solid #185a9d;
-            padding-bottom: 15px;
-        }
-
-        .cart-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-            text-align: left;
-        }
-
-        .cart-table th, .cart-table td {
-            padding: 15px;
+        li {
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+            margin: 15px 0;
+            padding: 20px;
             border: 1px solid #ddd;
+            border-radius: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-
-        .cart-table th {
-            background-color: #185a9d;
-            color: #fff;
+        li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
         }
-
-        .remove-btn {
-            padding: 10px 15px;
+        .button-container {
+            text-align: center;
+            margin-top: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .button-container button, .button-container a {
+            background-color: #4CAF50;
+            color: white;
             border: none;
+            padding: 15px 30px;
+            font-size: 16px;
             border-radius: 8px;
-            background-color: #e74c3c;
-            color: #fff;
             cursor: pointer;
-            transition: background-color 0.3s;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
         }
-
-        .remove-btn:hover {
+        .button-container button:hover, .button-container a:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+        }
+        .return-button a {
+            background-color: #3498db;
+        }
+        .return-button a:hover {
+            background-color: #2980b9;
+        }
+        .clear-cart-button button {
+            background-color: #e74c3c;
+        }
+        .clear-cart-button button:hover {
             background-color: #c0392b;
         }
-
-        .checkout-btn {
-            padding: 15px 20px;
-            border: none;
+        .empty-cart-message {
+            text-align: center;
+            font-size: 1.2rem;
+            color: #888;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
             border-radius: 10px;
-            background-color: #43cea2;
-            color: #fff;
-            font-size: 18px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            margin-top: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
-
-        .checkout-btn:hover {
-            background-color: #36a187;
-        }
-
-        .cart-summary {
-            margin-top: 20px;
-            font-size: 20px;
-            color: #333;
-        }
-
-        .back-link {
-            display: inline-block;
-            margin-top: 20px;
-            color: #185a9d;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s;
-        }
-
-        .back-link:hover {
-            color: #43cea2;
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+            li {
+                flex-direction: column;
+                text-align: center;
+            }
+            .button-container {
+                flex-direction: column;
+                align-items: center;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="form-container">
-        <h2>Your Cart</h2>
-        <table class="cart-table">
-            <thead>
-                <tr>
-                    <th>Ticket</th>
-                    <th>Event</th>
-                    <th>Price</th>
-                    <th>Quantity</th>
-                    <th>Total</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in cart_items %}
-                <tr>
-                    <td>{{ item.ticket_id }}</td>
-                    <td>{{ item.event_name }}</td>
-                    <td>${{ item.price }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>${{ item.price * item.quantity }}</td>
-                    <td>
-                        <form action="/remove_from_cart" method="post" style="display:inline;">
-                            <input type="hidden" name="ticket_id" value="{{ item.ticket_id }}">
-                            <button type="submit" class="remove-btn">Remove</button>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <div class="cart-summary">
-            <p><strong>Total:</strong> ${{ total }}</p>
-            <form action="/checkout" method="post">
-                <button type="submit" class="checkout-btn">Checkout</button>
-            </form>
-        </div>
-        <p><a href="/" class="back-link">Back to Dashboard</a></p>
+    <h1>Your Cart</h1>
+    <ul>
+        {% for item in cart_items %}
+            <li>
+                <span>{{ item['event_name'] }} (Quantity: {{ item['quantity'] }})</span>
+            </li>
+        {% else %}
+            <li class="empty-cart-message">Your cart is empty.</li>
+        {% endfor %}
+    </ul>
+
+    <div class="button-container">
+        <form id="checkout-form" action="{{ url_for('delete_cart') }}" method="POST">
+            <button type="button" onclick="placeOrder()">Checkout</button>
+        </form>
+        <form class="clear-cart-button" action="{{ url_for('delete_cart') }}" method="POST">
+            <button type="submit">Clear Cart</button>
+        </form>
+        <a class="return-button" href="{{ url_for('home') }}">Return to Main Page</a>
     </div>
+
+    <script>
+        function placeOrder() {
+            alert("Order Placed!");
+            document.getElementById("checkout-form").submit();  // Clears the cart on checkout
+        }
+    </script>
 </body>
 </html>

@@ -4,172 +4,317 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event Tickets</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Navbar Styling */
-        nav {
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f0f5;
+            margin: 0;
+            padding: 0;
+            color: #ffffff;
+            background-image: url('https://img.freepik.com/free-vector/coloured-polygonal-background-design_1164-31.jpg?t=st=1742066850~exp=1742070450~hmac=e64ab45b8e26ec72b3f3736a3239c48f8ab9e06139ec780bdb5626a94010e14e&w=826');
+            background-size: cover;
+            background-position: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            font-weight: bold;
+            padding-top: 20px;
+        }
+
+        /* Navigation Bar Styles */
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 30px;
-            background-color: #333;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
+            padding: 10px 50px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
+
+        .navbar .nav-links {
             display: flex;
+            align-items: center;
+            gap: 20px;
         }
-        nav ul li {
-            margin: 0 15px;
-        }
-        nav ul li a {
+
+        .navbar .nav-links a {
             text-decoration: none;
-            color: white;
-            font-size: 1.2rem;
+            color: #333;
+            font-weight: bold;
+            font-size: 16px;
+            transition: color 0.3s ease;
         }
-        /* Ticket Card Styling */
-        .ticket-card {
-            border: 2px dashed #333;
-            border-radius: 15px;
-            margin: 20px 0;
-            background-color: #fff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            position: relative;
+
+        .navbar .nav-links a:hover {
+            color: #3498db;
         }
-        .ticket-card::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            right: -10px;
-            width: 20px;
-            height: 20px;
-            background-color: #fff;
-            border: 2px solid #333;
-            border-radius: 50%;
-            transform: translateY(-50%);
+
+        /* Ticket List Styles */
+        ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 20px auto;
+            max-width: 800px;
         }
-        .ticket-card .event-details {
+
+        li {
+            background: linear-gradient(135deg, #ffffff, #f9f9f9);
+            margin: 15px 0;
             padding: 20px;
+            border-radius: 12px;
+            border: 2px dotted #030303;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
-        .ticket-card h5 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+
+        li:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 15px rgba(52, 152, 219, 0.3);
         }
-        .ticket-card p {
-            margin: 5px 0;
+
+        .ticket-info h2 {
+            font-size: 22px;
+            color: #2c3e50;
+            font-weight: bold;
         }
-        /* Footer */
-        footer {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #2C3E50;
-    color: white;
-    text-align: center;
-    padding: 20px;
-}
+
+        .ticket-info p {
+            font-size: 16px;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-right: 15px;
+        }
+
+        button.add-to-cart {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease, transform 0.2s ease;
+            font-weight: bold;
+        }
+
+        button.add-to-cart:hover {
+            background: linear-gradient(135deg, #2980b9, #1a5276);
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 10px;
+            }
+
+            .navbar .nav-links {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            li {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            form {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            button.add-to-cart {
+                width: 100%;
+                margin-top: 10px;
+            }
+        }
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/cart">cart</a></li>
-            <li><a href="/tickets">Tickets</a></li>
-            <li><a href="/contact">Contact Us</a></li>
-        </ul>
-        <ul>
-            {% if session['user'] %}
-                <li><a href="/logout">Logout</a></li>
-                <li>
-                    <form method="POST" action="/delete" onsubmit="return confirm('Are you sure you want to delete your account?');">
-                        <button type="submit" class="btn btn-warning">Delete Account</button>
-                    </form>
-                </li>
-            {% else %}
-                <li><a href="/login">Login</a></li>
-                <li><a href="/register">Register</a></li>
-            {% endif %}
-        </ul>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/cart">Cart</a>
+        </div>
     </nav>
 
-    <!-- Ticket Section -->
-    <div class="container mt-5 pt-5">
-        <h2 class="text-center mb-4">Available Tickets</h2>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card ticket-card">
-                    <div class="event-details">
-                        <h5>Event Ticket 1</h5>
-                        <p><strong>Date:</strong> 2024-12-01</p>
-                        <p><strong>Venue:</strong> Event Hall 1</p>
-                        <p><strong>Description:</strong> A thrilling concert featuring top artists.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card ticket-card">
-                    <div class="event-details">
-                        <h5>Event Ticket 2</h5>
-                        <p><strong>Date:</strong> 2024-12-02</p>
-                        <p><strong>Venue:</strong> Event Hall 2</p>
-                        <p><strong>Description:</strong> A night of stand-up comedy with popular comedians.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card ticket-card">
-                    <div class="event-details">
-                        <h5>Event Ticket 3</h5>
-                        <p><strong>Date:</strong> 2024-12-03</p>
-                        <p><strong>Venue:</strong> Event Hall 3</p>
-                        <p><strong>Description:</strong> A cultural fest showcasing various performances.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card ticket-card">
-                    <div class="event-details">
-                        <h5>Event Ticket 4</h5>
-                        <p><strong>Date:</strong> 2024-12-04</p>
-                        <p><strong>Venue:</strong> Event Hall 4</p>
-                        <p><strong>Description:</strong> A tech expo with the latest innovations.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card ticket-card">
-                    <div class="event-details">
-                        <h5>Event Ticket 5</h5>
-                        <p><strong>Date:</strong> 2024-12-05</p>
-                        <p><strong>Venue:</strong> Event Hall 5</p>
-                        <p><strong>Description:</strong> A workshop on personal development and motivation.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card ticket-card">
-                    <div class="event-details">
-                        <h5>Event Ticket 6</h5>
-                        <p><strong>Date:</strong> 2024-12-06</p>
-                        <p><strong>Venue:</strong> Event Hall 6</p>
-                        <p><strong>Description:</strong> An exclusive networking event for professionals.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <h1>Available Tickets</h1>
 
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 Event Dashboard. All Rights Reserved.</p>
-    </footer>
+    <ul>
+        <!-- Tickets List -->
+        <li>
+            <div class="ticket-info">
+                <h2>Float Fest Pool Party</h2>
+                <p>Price: $0</p>
+            </div>
+            <form action="/add_to_cart" method="POST">
+                <input type="hidden" name="ticket_id" value="1">
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" value="1">
+                <button type="submit" class="add-to-cart">Add to Cart</button>
+            </form>
+        </li>
+
+        <li>
+            <div class="ticket-info">
+                <h2>PMP Certification Training</h2>
+                <p>Price: $1599</p>
+            </div>
+            <form action="/add_to_cart" method="POST">
+                <input type="hidden" name="ticket_id" value="2">
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" value="1">
+                <button type="submit" class="add-to-cart">Add to Cart</button>
+            </form>
+        </li>
+
+        <li>
+            <div class="ticket-info">
+                <h2>Women Art Exhibition 2025</h2>
+                <p>Price: $0</p>
+            </div>
+            <form action="/add_to_cart" method="POST">
+                <input type="hidden" name="ticket_id" value="3">
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" value="1">
+                <button type="submit" class="add-to-cart">Add to Cart</button>
+            </form>
+        </li>
+
+        <li>
+            <div class="ticket-info">
+                <h2>Elante Event</h2>
+                <p>Price: $13</p>
+            </div>
+            <form action="/add_to_cart" method="POST">
+                <input type="hidden" name="ticket_id" value="4">
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" value="1">
+                <button type="submit" class="add-to-cart">Add to Cart</button>
+            </form>
+        </li>
+
+        <li>
+            <div class="ticket-info">
+                <h2>Makeup Artist in Jalandhar</h2>
+                <p>Price: $0</p>
+            </div>
+            <form action="/add_to_cart" method="POST">
+                <input type="hidden" name="ticket_id" value="5">
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" value="1">
+                <button type="submit" class="add-to-cart">Add to Cart</button>
+            </form>
+        </li>
+
+        <li>
+            <div class="ticket-info">
+                <h2>4 Day PMP Training</h2>
+                <p>Price: $1599</p>
+            </div>
+            <form action="/add_to_cart" method="POST">
+                <input type="hidden" name="ticket_id" value="6">
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" value="1">
+                <button type="submit" class="add-to-cart">Add to Cart</button>
+            </form>
+        </li>
+
+        <li>
+            <div class="ticket-info">
+                <h2>Heritage Walk in Kapurthala</h2>
+                <p>Price: $150</p>
+            </div>
+            <form action="/add_to_cart" method="POST">
+                <input type="hidden" name="ticket_id" value="7">
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" value="1">
+                <button type="submit" class="add-to-cart">Add to Cart</button>
+            </form>
+        </li>
+
+        <li>
+            <div class="ticket-info">
+                <h2>Punjabi Poetry Recital</h2>
+                <p>Price: $100</p>
+            </div>
+            <form action="/add_to_cart" method="POST">
+                <input type="hidden" name="ticket_id" value="8">
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" value="1">
+                <button type="submit" class="add-to-cart">Add to Cart</button>
+            </form>
+        </li>
+
+        <li>
+            <div class="ticket-info">
+                <h2>Tractor Rally and Farming Expo</h2>
+                <p>Price: $50</p>
+            </div>
+            <form action="/add_to_cart" method="POST">
+                <input type="hidden" name="ticket_id" value="9">
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" value="1">
+                <button type="submit" class="add-to-cart">Add to Cart</button>
+            </form>
+        </li>
+
+        <li>
+            <div class="ticket-info">
+                <h2>Punjabi Movie Premiere</h2>
+                <p>Price: $400</p>
+            </div>
+            <form action="/add_to_cart" method="POST">
+                <input type="hidden" name="ticket_id" value="10">
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" value="1">
+                <button type="submit" class="add-to-cart">Add to Cart</button>
+            </form>
+        </li>
+
+        <li>
+            <div class="ticket-info">
+                <h2>Sports Tournament</h2>
+                <p>Price: $300</p>
+            </div>
+            <form action="/add_to_cart" method="POST">
+                <input type="hidden" name="ticket_id" value="11">
+                <label for="quantity">Quantity:</label>
+                <input type="number" name="quantity" min="1" value="1">
+                <button type="submit" class="add-to-cart">Add to Cart</button>
+            </form>
+        </li>
+    </ul>
 </body>
 </html>

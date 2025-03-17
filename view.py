@@ -1,26 +1,11 @@
-
-## view.py
-from flask import render_template, request, redirect, session
-from models import User, Contact
+from flask import Flask, render_template, request, redirect, session, url_for, flash
+from models import User, Contact, Ticket, Cart
 from app import app, db
 
 @app.route('/')
 def home():
     user = session.get('user')
     return render_template('dashboard.html', username=user)
-
-
-
-@app.route('/cart')
-def cart():
-    return render_template('cart.html')
-
-
-
-@app.route('/tickets')
-def tickets():
-    return render_template('tickets.html')
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -79,3 +64,42 @@ def delete_account():
 
     return redirect('/')
 
+@app.route('/tickets')
+def tickets():
+    tickets = Ticket.query.all() or []  # Fetch tickets or default to an empty list
+    return render_template('tickets.html', tickets=tickets)
+
+@app.route('/add_to_cart', methods=['POST'])
+def add_to_cart():
+    ticket_id = request.form['ticket_id']
+    quantity = int(request.form['quantity'])
+
+    # Check if the ticket is already in the cart
+    cart_item = Cart.query.filter_by(ticket_id=ticket_id).first()
+    if cart_item:
+        cart_item.quantity += quantity  # Update the quantity
+    else:
+        cart_item = Cart(ticket_id=ticket_id, quantity=quantity)
+        db.session.add(cart_item)
+
+    db.session.commit()
+    return redirect(url_for('tickets'))
+
+@app.route('/cart')
+def cart():
+    cart_items = Cart.query.all() or []  # Fetch cart items or default to an empty list
+    detailed_cart = []
+    for item in cart_items:
+        ticket = Ticket.query.get(item.ticket_id)  # Fetch the associated ticket
+        detailed_cart.append({
+            'event_name': ticket.event_name,
+            'price': ticket.price,
+            'quantity': item.quantity
+        })
+    return render_template('cart.html', cart_items=detailed_cart)
+@app.route('/delete-cart', methods=['POST'])
+def delete_cart():
+    db.session.query(Cart).delete()  # Delete all cart items
+    db.session.commit()  # Save changes
+    flash("Cart has been emptied!", "success")  # Show a message
+    return redirect(url_for('cart'))  # Redirect back to the cart page
