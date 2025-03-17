@@ -26,7 +26,6 @@ with app.app_context():
     db.session.bulk_save_objects(sample_tickets)
     db.session.commit()
     
-    print("✅ Database refreshed with sample tickets.")
 
 if __name__ == '__main__':
     app.run(debug=True)
